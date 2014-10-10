@@ -1,0 +1,23 @@
+If I was using this in production and on a project I intended to keep working on, I would use Acorn because it is smaller that Esprima and runs faster on small files and when location-tracking is needed. Acorn also already supports ECMAScript 6, unlike Esprima.
+However, Esprima's documentation includes code but also more high-level overview content. It also includes lots of examples. For a prototyping/short term project like this one, Esprima has a much smaller barrier to getting started.
+Therefore, I will be using Esprima for this project.
+
+Acorn:
+-Issues tracked on Github. At time of checking, only 1 issue open, reported 8 hours ago. Issues as early as 14 hours ago have been resolved. --> Appears to be under very active development; responsive devs
+	-also possible: not as many people are using it so no one is reporting issues
+-Compatible with ECMAScript 3, 5, 6
+-Tokenizer isn't optimized for using separately; is best used for parser. So if tokenizer is something I would want to use without Acorn's parser, this might not be a great fit
+-About half the size of Esprima (LOC), 34 kB smaller
+-Faster according to benchmark tests on both Esprima's website and Acorn's website. 
+-Direct source code-based documentation using Docco to generate docs from comments, no examples
+
+Esprima:
+-lots of open pull requests, 101 open issues --> Are these issues that were actually fixed? 
+-Only partially compatible with ECMAScript 6 --> is this under current development? Concerns with future compatability
+-Nice documentation with lots of examples
+
+
+
+Both:
+-produce the same format (Abstract Syntax Tree)
+	-Though Esprima's AST format includes a Type field and Acorn's does not.
