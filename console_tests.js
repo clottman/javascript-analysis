@@ -8,7 +8,7 @@ var console_whitelist_test = function(name, str, whitelist_params, expected_valu
 }
 
 var console_blacklist_test = function(name, str, blacklist_params, expected_value, should_error) {
-	var answer = whitelist(str, whitelist_params);
+	var answer = blacklist(str, blacklist_params);
 	var correct = test_correct(answer, blacklist_params, expected_value, should_error);
 	console.log(name + ": " + correct);
 }
@@ -52,3 +52,15 @@ console_whitelist_test('variable declaration', variable_declaration, ["VariableD
 
 
 // Blacklist tests
+console_blacklist_test("blacklist nested statements", test_if_in_for, ["IfStatement", "ForStatement"], [false, false]);
+console_blacklist_test("blacklist single statement", test_if, ["IfStatement"], [false]);
+console_blacklist_test("blacklist single not present", test_if, ["WhileStatement"], [true]);
+console_blacklist_test("blacklist nested if", for_in_nested_if, ["ForStatement"], [false]);
+console_blacklist_test("blacklist nested if not present", for_in_nested_if, ["WhileStatement"], [true]);
+
+// since this code has an error, we expect for statment to be false since the function will return an error
+// before the for is added to the hash
+console_blacklist_test("blacklist with too many brackets", too_many_brackets, ["ForStatement"], [false], true);
+console_blacklist_test('blacklist function expression', function_expression, ["FunctionExpression"], [false]);
+console_blacklist_test('blacklist function declaration', function_declaration, ["FunctionDeclaration"], [false]);
+console_blacklist_test('variable declaration', variable_declaration, ["VariableDeclaration"], [false]);
