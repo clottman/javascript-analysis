@@ -3,19 +3,30 @@
 // for development purposes only
 var console_whitelist_test = function(name, str, whitelist_params, expected_value, should_error) {
 	var answer = whitelist(str, whitelist_params);
+	var correct = test_correct(answer, whitelist_params, expected_value, should_error);
+	console.log(name + ": " + correct);
+}
+
+var console_blacklist_test = function(name, str, blacklist_params, expected_value, should_error) {
+	var answer = whitelist(str, whitelist_params);
+	var correct = test_correct(answer, blacklist_params, expected_value, should_error);
+	console.log(name + ": " + correct);
+}
+
+var test_correct = function(actual, hash_values, expected_values, should_error) {
 	var correct = "ok";
 	if (!should_error) {
-		for (var i = 0; i< whitelist_params.length; i++) {
-			if (answer[whitelist_params[i]] != expected_value[i]) {
+		for (var i = 0; i< hash_values.length; i++) {
+			if (actual[hash_values[i]] != expected_values[i]) {
 				correct = "fail";
 			}
 		}
 	} else {
-		if (answer != false) {
+		if (actual != false) {
 			correct = "fail"
 		}
 	}
-	console.log(name + ": " + correct);
+	return correct;
 }
 
 var test_if_in_for = "for (var i=0;i<12;i++) {if (i==2) {console.log('I is two');}}"
@@ -27,6 +38,8 @@ var too_many_brackets = "var x=1; var y=2; if(x=2) { if (y=2) { for (var i=2; i>
 var function_expression = "var y = function(x) {console.log(x)}";
 var function_declaration = "function sayHello() {console.log('hi');}"
 var variable_declaration = "var x = 2"
+
+// Whitelist tests 
 console_whitelist_test("whitelist nested statements", test_if_in_for, ["IfStatement", "ForStatement"], [true, true]);
 console_whitelist_test("whitelist single statement", test_if, ["IfStatement"], [true]);
 console_whitelist_test("whitelist single not present", test_if, ["WhileStatement"], [false]);
@@ -36,3 +49,6 @@ console_whitelist_test("whitelist with too many brackets", too_many_brackets, ["
 console_whitelist_test('whitelist function expression', function_expression, ["FunctionExpression"], [true]);
 console_whitelist_test('whitelist function declaration', function_declaration, ["FunctionDeclaration"], [true]);
 console_whitelist_test('variable declaration', variable_declaration, ["VariableDeclaration"], [true]);
+
+
+// Blacklist tests
