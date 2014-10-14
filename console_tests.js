@@ -24,10 +24,15 @@ var test_if = "var x = 'value'; if (x == true) {console.log('statement')}";
 // tests that the whitelist function finds a statement nested in two if statements
 var for_in_nested_if = "var x=1; var y=2; if(x=2) { if (y=2) { for (var i=2; i>0; i--) {console.log('in here');} } }";
 var too_many_brackets = "var x=1; var y=2; if(x=2) { if (y=2) { for (var i=2; i>0; i--) {console.log('in here');} } } }";
-
-
+var function_expression = "var y = function(x) {console.log(x)}";
+var function_declaration = "function sayHello() {console.log('hi');}"
+var variable_declaration = "var x = 2"
 console_whitelist_test("whitelist nested statements", test_if_in_for, ["IfStatement", "ForStatement"], [true, true]);
 console_whitelist_test("whitelist single statement", test_if, ["IfStatement"], [true]);
+console_whitelist_test("whitelist single not present", test_if, ["WhileStatement"], [false]);
 console_whitelist_test("whitelist nested if", for_in_nested_if, ["ForStatement"], [true]);
+console_whitelist_test("whitelist nested if not present", for_in_nested_if, ["WhileStatement"], [false]);
 console_whitelist_test("whitelist with too many brackets", too_many_brackets, ["ForStatement"], [false], true);
-
+console_whitelist_test('whitelist function expression', function_expression, ["FunctionExpression"], [true]);
+console_whitelist_test('whitelist function declaration', function_declaration, ["FunctionDeclaration"], [true]);
+console_whitelist_test('variable declaration', variable_declaration, ["VariableDeclaration"], [true]);

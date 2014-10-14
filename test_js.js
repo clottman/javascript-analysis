@@ -40,6 +40,13 @@ var whitelist = function(code_str, whitelist_params) {
 				nodes.push(nodes[i].body)
 			}
 		}
+		if (nodes[i].declarations != undefined) {
+			var new_nodes = nodes[i].declarations;
+			new_nodes.push.apply(nodes, new_nodes);
+		}
+		if (nodes[i].type == "VariableDeclarator") {
+			nodes.push(nodes[i].init);
+		}
 		i++;
 	}
 
