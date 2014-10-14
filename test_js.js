@@ -11,11 +11,9 @@ var whitelist = function(code_str, whitelist_params) {
 	}
 	var whitelist_length = whitelist_params.length;
 	var num_found = 0;
+	
 	// hash of parameters initialized to false
-	var whitelist_hash = {}
-	for (var i = 0; i < whitelist_length; i++) {
-		whitelist_hash[whitelist_params[i].toString()] = false;
-	}
+	var whitelist_hash = createHash(whitelist_params, false);
 	
 	// copy the code_tree into a queue
 	var nodes = code_tree.slice();
@@ -54,4 +52,12 @@ var blacklist = function(code_str, blacklist_params) {
 
 var isArray = function(o) {
   return Object.prototype.toString.call(o) === '[object Array]';
+}
+
+var createHash = function(params, initializer) {
+	var hash = {}
+	for (var i = 0; i < params.length; i++) {
+		hash[params[i].toString()] = initializer;
+	}
+	return hash;
 }
