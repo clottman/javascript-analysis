@@ -6,14 +6,18 @@
 var console_whitelist_test = function(name, str, whitelist_params, expected_value, should_error) {
 	var actual = whitelist(str, whitelist_params);
 	var correct = test_correct(actual, whitelist_params, expected_value, should_error);
-	console.log(name + ": " + correct);
+	if ('console' in self && 'log' in console) {
+		console.log(name + ": " + correct);
+	}
 }
 
 // tests the blacklist function; outputs to console
 var console_blacklist_test = function(name, str, blacklist_params, expected_value, should_error) {
 	var actual = blacklist(str, blacklist_params);
 	var correct = test_correct(actual, blacklist_params, expected_value, should_error);
-	console.log(name + ": " + correct);
+	if ('console' in self && 'log' in console) {
+		console.log(name + ": " + correct);
+	}
 }
 
 // Tests if each value in the actual result hash corresponds to the expected value provided in the expected values array
