@@ -1,24 +1,38 @@
 $(document).ready(function() {
 
-var params = ["IfStatement", "ForStatement"];
+var whitelist_params = ["IfStatement", "ForStatement"];
+var blacklist_params = ["WhileStatement"];
 
 	
 $('#javascript-area').keypress(function() {
-	var answer = whitelist($(this).val(), params);
+	var text = $(this).val();
+	var whitelist_answer = whitelist(text, whitelist_params);
+	var blacklist_answer = blacklist(text, blacklist_params);
 	var display = "";
-	for (var key in answer) {
-		if (answer.hasOwnProperty(key)) {
-		  	if (answer[key] == true) {
-		  		display += "Used a(n) " + key + "<br>";
+	for (var key in whitelist_answer) {
+		if (whitelist_answer.hasOwnProperty(key)) {
+		  	if (whitelist_answer[key] == true) {
+		  		display += "Good job using a(n) " + key + "<br>";
 		  	} else {
-		  		display += "Still need a(n): " + key + "<br>";
+		  		display += "Don't forget you need a(n): " + key + "<br>";
 		  	}
 	 	}
 	}
-	if (display == "") {
-		display = "Finish typing, or fix your syntax errors to validate."
+	for (var key in blacklist_answer) {
+		if (blacklist_answer.hasOwnProperty(key)) {
+		  	if (blacklist_answer[key] == false) {
+		  		display += "Oops! You used a(n) " + key + "<br>";
+		  	} else {
+		  		display += "Good job avoiding using a(n) " + key + "<br>";
+		  	}
+	 	}
 	}
-	$("#output").html(display);
+	// this could be a sign the user made a syntax error, or that they are not done typing
+	// a better solution is to figure out which one;
+	// for now, just don't update the display until there's something we can parse
+	if (display != "") {
+		$("#output").html(display);		
+	}
 });
 
 });
