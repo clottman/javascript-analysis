@@ -1,5 +1,23 @@
 // depends on esprima.js
 
+// wrapper for check_presence that checks if the provided AST types are NOT present in the code provided
+// returns a hash with types as keys
+// answer value is false if the type was found, true if type not found (blacklist success)
+var blacklist = function(code_str, blacklist_params) {
+	var result = check_presence(code_str, blacklist_params, false);
+	return result;	
+}
+
+// wrapper for check_presence that checks if the provided AST types are present in the code provided
+// code_str: a string of javascript code to be tested
+// whitelist_params: an array of strings representing AST types the javascript must contain
+// returns false if unable to parse code_str, a hash of whitelisted types and whether they were in the code
+// hash value in answer = true if type was found in the code (whitelist success), false otherwise
+var whitelist = function(code_str, whitelist_params) {
+	var result = check_presence(code_str, whitelist_params, true);
+	return result;
+}
+
 // code: a string of javascript code to be tested
 // ast_types: an array of strings representing something the javascript must contain or not contain
 // should_contain: true to check if the ast_types are in the code_str, false to check whether they are not
@@ -8,15 +26,17 @@
 // ex: should_contain is false and code_str contained it ==> hash[type] = false
 var check_presence = function(code_str, ast_types, should_contain) {
 	var code_tree = parseCodeString(code_str);
+	
 	if (!code_tree) {
 		return false;
 	}
 
 	var types_length = ast_types.length;
 	var num_found = 0;
-	
 	var initialize_bool;
 	var found_bool;
+	
+	// set variables for answer flags that allow this method to be used to check both should_contain=true and should_contain=false
 	if (!should_contain) {
 		initialize_bool = true;
 		found_bool = false;
@@ -24,6 +44,7 @@ var check_presence = function(code_str, ast_types, should_contain) {
 		initialize_bool = false;
 		found_bool = true;
 	}
+
 	// hash of parameters initialized to false
 	var types_hash = createHash(ast_types, initialize_bool);
 	
@@ -48,22 +69,6 @@ var check_presence = function(code_str, ast_types, should_contain) {
 	}
 
 	return types_hash;
-}
-
-// returns a hash with types as keys
-// value is false if the type was found, true if type not found (blacklist success)
-var blacklist = function(code_str, blacklist_params) {
-	var result = check_presence(code_str, blacklist_params, false);
-	return result;	
-}
-
-// code_str: a string of javascript code to be tested
-// whitelist_params: an array of strings representing something the javascript must contain
-// returns false if unable to parse code_str, a hash of whitelisted types and whether they were in the code
-// hash value = true if type was found in the code (whitelist success)
-var whitelist = function(code_str, whitelist_params) {
-	var result = check_presence(code_str, whitelist_params, true);
-	return result;
 }
 
 var parseCodeString = function(code_str) {

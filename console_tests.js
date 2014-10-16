@@ -1,18 +1,26 @@
 
 // facilitates unit testing for various conditions in the browser console
 // for development purposes only
+
+// checks the whitelist function; outputs to console
 var console_whitelist_test = function(name, str, whitelist_params, expected_value, should_error) {
-	var answer = whitelist(str, whitelist_params);
-	var correct = test_correct(answer, whitelist_params, expected_value, should_error);
+	var actual = whitelist(str, whitelist_params);
+	var correct = test_correct(actual, whitelist_params, expected_value, should_error);
 	console.log(name + ": " + correct);
 }
 
+// tests the blacklist function; outputs to console
 var console_blacklist_test = function(name, str, blacklist_params, expected_value, should_error) {
-	var answer = blacklist(str, blacklist_params);
-	var correct = test_correct(answer, blacklist_params, expected_value, should_error);
+	var actual = blacklist(str, blacklist_params);
+	var correct = test_correct(actual, blacklist_params, expected_value, should_error);
 	console.log(name + ": " + correct);
 }
 
+// Tests if each value in the actual result hash corresponds to the expected value provided in the expected values array
+// actual: an object with keys and values
+// hash_values: keys for actual
+// expected_values: an array of what the values in actual are expected to be
+// should_error: flag for if the test was intended to fail -- actual was false instead of an object, but this was intended
 var test_correct = function(actual, hash_values, expected_values, should_error) {
 	var correct = "ok";
 	if (!should_error) {
