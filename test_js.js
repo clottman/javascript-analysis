@@ -7,11 +7,11 @@
 // ex: should_contain is true and code_str contained it ==> hash[type] = true
 // ex: should_contain is false and code_str contained it ==> hash[type] = false
 var check_presence = function(code_str, ast_types, should_contain) {
-	try {
-		var code_tree = esprima.parse(code_str).body;
-	} catch (e) {
+	var code_tree = parseCodeString(code_str);
+	if (!code_tree) {
 		return false;
 	}
+
 	var types_length = ast_types.length;
 	var num_found = 0;
 	
@@ -37,8 +37,8 @@ var check_presence = function(code_str, ast_types, should_contain) {
 			types_hash[nodes[i].type] = found_bool;
 			num_found++;
 		}
-		// push child nodes onto queue to check at the end
 		// uses breadth first search to check nodes
+		// push child nodes onto queue to check at the end
 		pushChildren(nodes, nodes[i]);
 		i++;
 		if (should_contain && num_found == types_length) {
@@ -66,9 +66,19 @@ var whitelist = function(code_str, whitelist_params) {
 	return result;
 }
 
+var parseCodeString = function(code_str) {
+	var code_tree;
+	try {
+		code_tree = esprima.parse(code_str).body;
+	} catch (e) {
+		code_tree = false;
+	}
+	return code_tree;
+}
+
 // NOTE: Traversing the tree ended up being more complicated than I thought. Not all children are in node.body!
 // For a more robust solution, I'd use something like https://www.npmjs.org/package/esprima-walk
-// or https://github.com/Constellation/estraverse
+// or https://github.com/Constellation/estraverse, or the traverse method used in the esprima examples
 var pushChildren = function(nodes, node) {
 	if (node.consequent != undefined) {
 		var new_nodes = node.consequent.body;

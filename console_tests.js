@@ -36,8 +36,10 @@ var test_if = "var x = 'value'; if (x == true) {console.log('statement')}";
 var for_in_nested_if = "var x=1; var y=2; if(x=2) { if (y=2) { for (var i=2; i>0; i--) {console.log('in here');} } }";
 var too_many_brackets = "var x=1; var y=2; if(x=2) { if (y=2) { for (var i=2; i>0; i--) {console.log('in here');} } } }";
 var function_expression = "var y = function(x) {console.log(x)}";
+var function_expression_with_for = "var y = function(x) {for (var i=0;i<x;i++) {console.log(i)}}";
 var function_declaration = "function sayHello() {console.log('hi');}"
 var variable_declaration = "var x = 2"
+
 
 // Whitelist tests 
 console_whitelist_test("whitelist nested statements", test_if_in_for, ["IfStatement", "ForStatement"], [true, true]);
