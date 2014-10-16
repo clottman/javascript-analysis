@@ -54,13 +54,15 @@ var check_presence = function(code_str, ast_types, should_contain) {
 	// start checking nodes, stop when out of nodes or all parameters have been found
 	var i = 0;
 	while (i < nodes.length ) {
-		if (types_hash[nodes[i].type] == initialize_bool) {
-			types_hash[nodes[i].type] = found_bool;
-			num_found++;
+		if (nodes[i] != null) {
+			if (types_hash[nodes[i].type] == initialize_bool) {
+				types_hash[nodes[i].type] = found_bool;
+				num_found++;
+			}
+			// uses breadth first search to check nodes
+			// push child nodes onto queue to check at the end
+			pushChildren(nodes, nodes[i]);
 		}
-		// uses breadth first search to check nodes
-		// push child nodes onto queue to check at the end
-		pushChildren(nodes, nodes[i]);
 		i++;
 		if (should_contain && num_found == types_length) {
 			// if whitelisting types, break when you've found them all

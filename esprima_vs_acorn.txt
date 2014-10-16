@@ -21,3 +21,4 @@ Esprima:
 Both:
 -produce the same format (Abstract Syntax Tree)
 	-Though Esprima's AST format includes a Type field and Acorn's does not.
+	-The Type field will be very useful for whitelist and blacklist functionality.
