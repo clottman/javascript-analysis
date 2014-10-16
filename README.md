@@ -10,5 +10,5 @@ Project submission to Khan Academy as an internship interview stage.
 - Esprima_vs_acorn.txt: A justification for the choice of Esprima as the project's Javascript parser
 
 ### External Libraries
-Esprima -- see esprima_vs_acorn.txt for why
-JQuery, because everything includes JQuery. (But really, only to catch the keypress event in the test textarea)
+- Esprima -- see esprima_vs_acorn.txt for why
+- JQuery, because everything includes JQuery. (But really, only to catch the keypress event in the test textarea)
